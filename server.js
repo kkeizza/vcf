@@ -9,27 +9,27 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Configuration - Change this value to whatever you want (250, 300, 500, etc.)
+
 const MAX_CONTACTS = 370; // 👈 CHANGE THIS VALUE TO SET MAXIMUM CONTACTS
 
-// Initialize Supabase client
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY
 );
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Rate limiting
+
 const uploadLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 20
 });
 
-// Helper function to format phone number (remove all non-digits)
+
 function formatPhoneNumber(phone) {
   let cleaned = phone.replace(/\D/g, '');
   if (cleaned.startsWith('0')) {
@@ -38,12 +38,12 @@ function formatPhoneNumber(phone) {
   return cleaned;
 }
 
-// Helper function to validate phone number
+
 function validatePhoneNumber(phone) {
   return /^\d{9,12}$/.test(phone);
 }
 
-// Helper function to check WhatsApp
+
 async function checkWhatsApp(phone) {
   try {
     const response = await fetch(`https://apiskeith.top/onwhatsapp?q=${phone}`);
@@ -55,7 +55,7 @@ async function checkWhatsApp(phone) {
   }
 }
 
-// Admin authentication middleware
+
 const adminAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   
@@ -74,7 +74,7 @@ const adminAuth = (req, res, next) => {
   }
 };
 
-// Initialize database
+
 async function initializeDatabase() {
   console.log('🔄 Checking database connection...');
   
