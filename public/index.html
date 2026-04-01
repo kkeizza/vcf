@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>keith VCF Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header i {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .stats-card {
+            background: #f8f9fa;
+            margin: 20px;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .stats-card h3 {
+            margin-bottom: 20px;
+            color: #495057;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .stat {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat i {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .progress-container {
+            margin-top: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        .progress-text {
+            text-align: right;
+            font-size: 0.85em;
+            color: #6c757d;
+        }
+
+        .upload-form {
+            padding: 30px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header i {
+            font-size: 32px;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: #6c757d;
+            font-size: 0.85em;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin: 20px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message.success {
+            display: flex;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            display: flex;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .info-item i {
+            font-size: 24px;
+            color: #667eea;
+        }
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+        }
+
+        .info-item p {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+            }
+            .info-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <i class="fas fa-address-card"></i>
+            <h1>Keith Vcf</h1>
+            <p>Submit your contact to be included in Keith's directory</p>
+        </div>
+        
+        <div class="stats-card">
+            <h3><i class="fas fa-chart-line"></i> Directory Status</h3>
+            <div class="stats">
+                <div class="stat">
+                    <i class="fas fa-users"></i>
+                    <span class="stat-label">Total Contacts</span>
+                    <span class="stat-value" id="totalCount">Loading...</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span class="stat-label">Remaining Slots</span>
+                    <span class="stat-value" id="remainingCount">Loading...</span>
+                </div>
+                <div class="stat">
+                    <i class="fas fa-database"></i>
+                    <span class="stat-label">Max Capacity</span>
+                    <span class="stat-value" id="maxLimit">Loading...</span>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0% Full</div>
+            </div>
+        </div>
+        
+        <form id="uploadForm" class="upload-form">
+            <div class="form-header">
+                <i class="fab fa-whatsapp"></i>
+                <h3>Submit Your WhatsApp Contact</h3>
+                <p style="font-size: 14px; color: #6c757d; margin-top: 5px;">Only WhatsApp registered numbers accepted</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-user"></i> Full Name
+                </label>
+                <input type="text" id="name" required placeholder="e.g., Keith Tech">
+                <small><i class="fas fa-info-circle"></i> Your name will be saved as is</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="phone">
+                    <i class="fab fa-whatsapp"></i> WhatsApp Number
+                </label>
+                <input type="tel" id="phone" required placeholder="e.g., 254700000000">
+                <small><i class="fas fa-info-circle"></i> Enter digits only don't include (+)(e.g., 254700000000) - Will be verified on WhatsApp</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                <i class="fab fa-whatsapp"></i> Verify & Submit
+            </button>
+        </form>
+        
+        <div id="message" class="message"></div>
+        
+        <div class="info-panel">
+            <div class="info-item">
+                <i class="fab fa-whatsapp"></i>
+                <div>
+                    <strong>WhatsApp Required</strong>
+                    <p>Number must be registered on WhatsApp</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone-alt"></i>
+                <div>
+                    <strong>VCF Format</strong>
+                    <p>Contacts will be exported with 🫆 emoji</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-lock"></i>
+                <div>
+                    <strong>Admin Managed</strong>
+                    <p>Only administrators can modify contacts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let maxLimit = 500;
+        
+        async function fetchStats() {
+            try {
+                const response = await fetch('/admin/stats');
+                const stats = await response.json();
+                maxLimit = stats.maxLimit;
+                const total = stats.totalContacts;
+                const remaining = stats.remaining;
+                const percentage = (total / maxLimit) * 100;
+                
+                document.getElementById('totalCount').innerHTML = `${total} <span style="font-size: 0.6em;">/ ${maxLimit}</span>`;
+                document.getElementById('remainingCount').textContent = remaining;
+                document.getElementById('maxLimit').textContent = maxLimit;
+                document.getElementById('progressFill').style.width = `${percentage}%`;
+                document.getElementById('progressText').textContent = `${Math.round(percentage)}% Full`;
+                
+                if (percentage >= 100) {
+                    document.getElementById('uploadForm').querySelector('button').disabled = true;
+                    showMessage(`Directory is full (${maxLimit}/${maxLimit}). No more contacts can be added.`, 'error');
+                } else {
+                    document.getElementById('uploadForm').querySelector('button').disabled = false;
+                }
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+            }
+        }
+        
+        async function checkPhoneExists(phone) {
+            try {
+                const response = await fetch('/check-contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone })
+                });
+                const data = await response.json();
+                return data.exists;
+            } catch (error) {
+                return false;
+            }
+        }
+        
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${text}`;
+            messageDiv.className = `message ${type}`;
+            
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const submitBtn = e.target.querySelector('button');
+            
+            if (!name || !phone) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            if (name.length < 2) {
+                showMessage('Name must be at least 2 characters', 'error');
+                return;
+            }
+            
+            if (!/^\d{9,12}$/.test(phone)) {
+                showMessage('Phone must be 9-12 digits (e.g., 254700000000)', 'error');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying WhatsApp...';
+            
+            try {
+                // First check if phone exists in database
+                const exists = await checkPhoneExists(phone);
+                if (exists) {
+                    showMessage('This phone number is already registered', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Verify & Submit';
+                    return;
+                }
+                
+                // Submit to server (which will verify WhatsApp)
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('✓ WhatsApp verified! Contact submitted successfully!', 'success');
+                    document.getElementById('uploadForm').reset();
+                    fetchStats();
+                } else {
+                    showMessage(data.error || 'Error submitting contact', 'error');
+                }
+            } catch (error) {
+                showMessage('Network error. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Verify & Submit';
+            }
+        });
+        
+        fetchStats();
+        setInterval(fetchStats, 30000);
+    </script>
+</body>
+</html>
